@@ -118,7 +118,7 @@ public class WebViewComponent : MonoBehaviour
     protected string messageFromWebView (string[] pParameters)
 	{
 		// --- Feed actions here
-		// --- Return null if this is an async action, then call sendMessageToWebView
+		// --- Return null if this is an async action, then call webViewDirectHandler
 		// --- Return json in string if this is a sync action ( ex: @"{success: true}" )
 
 		if (pParameters[0] == @"")

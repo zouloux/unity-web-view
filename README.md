@@ -64,16 +64,20 @@ if (pParameters[0] == @"myAction")
 
 Note that you can send complex values thanks to JSON.
 
-Return `null` if this is an async action. Then call `sendMessageToWebView` to send back answer to the WebView when it's done :
+Return `null` if this is an async action. Then call `webViewDirectHandler` to send back answer to the WebView when it's done :
 ```
 if (pParameters[0] == @"takeScreenshot")
 {
 	StartCoroutine (this.cameraObject.TakePhoto( (value) =>
 	{
-		this.sendMessageToWebView(
+		// Now we can send back our answer
+		this.webViewDirectHandler(
 			@"{photo:" + value + "}"
 		);
 	}));
+
+	// We return null here to keep the JS Promise open
+	return null;
 }
 ```
 
