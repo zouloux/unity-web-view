@@ -59,8 +59,12 @@ public class WebViewComponent : MonoBehaviour
 				// Interprêter le message de la WebView
 				string response = messageFromWebView( parameters );
 
-				// Retourner le résultat en différé
-				StartCoroutine( webViewDirectHandler( response ) );
+				// Si on a une réponse synchrone, on répond directement
+				if (response != null)
+				{
+					// Retourner le résultat en différé pour laisser respirer
+					StartCoroutine( webViewDirectHandler( response ) );
+				}
 			},
 
 			// Erreur
@@ -113,11 +117,14 @@ public class WebViewComponent : MonoBehaviour
 	 */
     protected string messageFromWebView (string[] pParameters)
 	{
-		// Feed actions here 
+		// --- Feed actions here
+		// --- Return null if this is an async action, then call sendMessageToWebView
+		// --- Return json in string if this is a sync action ( ex: @"{success: true}" )
+
 		if (pParameters[0] == @"")
 		{
 			// ...
-			// return "{result:}"
+			// return "{result:...}"
 		}
 		/*
 		else if (pParameters[0] == @"otherAction")

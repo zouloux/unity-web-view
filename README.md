@@ -43,13 +43,14 @@ The communication Gateway is a javascript file to load from the WebView. This fi
 
 #### In Unity
 
-Edit directly method `messageFromWebView` into `WebViewComponent.cs` (at line 117) to implement your actions into Unity.
+Edit directly method `messageFromWebView` into `WebViewComponent.cs` (at line 120) to implement your actions into Unity.
 
 For ex :
 ```
 if (pParameters[0] == @"myAction")
 {
 	gameObject.doThis( pParameters[1], pParameters[2] );
+	return @"";
 }
 ```
 
@@ -62,6 +63,19 @@ if (pParameters[0] == @"myAction")
 ```
 
 Note that you can send complex values thanks to JSON.
+
+Return `null` if this is an async action. Then call `sendMessageToWebView` to send back answer to the WebView when it's done :
+```
+if (pParameters[0] == @"takeScreenshot")
+{
+	StartCoroutine (this.cameraObject.TakePhoto( (value) =>
+	{
+		this.sendMessageToWebView(
+			@"{photo:" + value + "}"
+		);
+	}));
+}
+```
 
 
 ##### In javascript
@@ -87,6 +101,11 @@ UnityGateway.onMessage = (jsonObject) =>
 {
 	console.log('Message from Unity !', jsonObject);
 };
+```
+
+If you are using Solidify lib, `onMessage` is a `Signal` :
+```
+UnityGateway.onMessage.add(this.myHandler, this);
 ```
 
 Unity is sending commands to Javascript by injection, so there is nearly no technical limit about size or types.
