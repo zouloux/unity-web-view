@@ -63,7 +63,7 @@ public class WebViewComponent : MonoBehaviour
 				if (response != null)
 				{
 					// Retourner le résultat en différé pour laisser respirer
-					StartCoroutine( webViewDirectHandler( response ) );
+					webViewDirectHandler( response );
 				}
 			},
 
@@ -155,9 +155,8 @@ public class WebViewComponent : MonoBehaviour
 	 * Les paramètres sont à envoyer en string Javascript, comme suit :
 	 * "true, 'ok', {object: true}"
 	 */
-	protected IEnumerator webViewDirectHandler (string pParams)
+	protected void webViewDirectHandler (string pParams)
 	{
-	    yield return new WaitForSeconds( 0.1f );
 		webViewObject.EvaluateJS(@"UnityGateway.__pendingDirectHandler(" + pParams + @")");
 	}
 

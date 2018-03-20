@@ -56,7 +56,10 @@ export class UnityGateway
 				UnityGateway.__pendingDirectHandler = ( ...rest ) =>
 				{
 					// Exécuter la promesse et passer les paramètres
-					resolve( rest );
+					resolve({
+						...rest,
+						isUnity: true
+					});
 
 					// Repasser le handler de réponse à noop pour éviter que la promesse reste en mémoire
 					UnityGateway.__pendingDirectHandler = _noop;
@@ -77,7 +80,7 @@ export class UnityGateway
 					resolve({
 						isUnity: false
 					});
-				}, 500);
+				}, 100);
 			}
 		});
 	}
@@ -92,6 +95,6 @@ export class UnityGateway
 		console.info('UnityGateway.callWebView', rest);
 
 		// Relayer au signal
-		UnityGateway.onMessage( rest );
+		UnityGateway.onMessage( ...rest );
 	}
 }
